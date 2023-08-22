@@ -9,8 +9,18 @@
 #define labelBy "by Radu Marinescu"
 #define labelOk "Start"
 #define labelCancel "Cancel"
+#define labelHaPicker "Ha:   "
+#define labelSiiPicker "Sii:   "
+#define labelOiiiPicker "Oiii:  "
+#define labelHaSelect "Select your Ha view"
+#define labelSiiSelect "Select your Sii view"
+#define labelOiiiSelect "Select your Oiii view"
 
 var dialog;
+
+var sourceHa;
+var sourceSii;
+var sourceOiii;
 
 function ui() {
 
@@ -28,6 +38,73 @@ function ui() {
    this.titleLabel.wordWrapping = true;
    this.titleLabel.useRichText  = true;
    this.titleLabel.text = "<p><b>" + labelTitle + " " + labelVersion + "</b> &mdash; " + labelBy + ".</p>";
+
+   this.selectorHaLabel = new Label(this);
+   this.selectorHaLabel.minWidth = 6;
+   this.selectorHaLabel.text = labelHaPicker;
+   this.selectorHaLabel.textAlignment = 2 | 128;
+
+   this.selectorHaPicker = new ViewList(this);
+   this.selectorHaPicker.minWidth = 200;
+   this.selectorHaPicker.getAll();
+   this.selectorHaPicker.toolTip = labelHaSelect;
+   this.selectorHaPicker.onViewSelected = function (view) {
+       console.write("Selected '" + view.id + "' for Ha reference.");
+      sourceHa = view;
+   };
+
+   this.groupHa = new HorizontalSizer;
+   this.groupHa.spacing = 4;
+   this.groupHa.add(this.selectorHaLabel);
+   this.groupHa.add(this.selectorHaPicker, 100);
+
+   this.selectorSiiLabel = new Label(this);
+   this.selectorSiiLabel.minWidth = 6;
+   this.selectorSiiLabel.text = labelSiiPicker;
+   this.selectorSiiLabel.textAlignment = 2 | 128;
+
+   this.selectorSiiPicker = new ViewList(this);
+   this.selectorSiiPicker.minWidth = 200;
+   this.selectorSiiPicker.getAll();
+   this.selectorSiiPicker.toolTip = labelSiiSelect;
+   this.selectorSiiPicker.onViewSelected = function (view) {
+      console.write("Selected '" + view.id + "' for Sii reference.");
+      sourceSii = view;
+   };
+
+   this.groupSii = new HorizontalSizer;
+   this.groupSii.spacing = 4;
+   this.groupSii.add(this.selectorSiiLabel);
+   this.groupSii.add(this.selectorSiiPicker, 100);
+
+   this.selectorOiiiLabel = new Label(this);
+   this.selectorOiiiLabel.minWidth = 6;
+   this.selectorOiiiLabel.text = labelOiiiPicker;
+   this.selectorOiiiLabel.textAlignment = 2 | 128;
+
+   this.selectorOiiiPicker = new ViewList(this);
+   this.selectorOiiiPicker.minWidth = 200;
+   this.selectorOiiiPicker.getAll();
+   this.selectorOiiiPicker.toolTip = labelOiiiSelect;
+   this.selectorOiiiPicker.onViewSelected = function (view) {
+      console.write("Selected '" + view.id + "' for Oiii reference.");
+      sourceOiii = view;
+   };
+
+   this.groupOiii = new HorizontalSizer;
+   this.groupOiii.spacing = 4;
+   this.groupOiii.add(this.selectorOiiiLabel);
+   this.groupOiii.add(this.selectorOiiiPicker, 100);
+
+   this.groupHSO = new VerticalSizer;
+   this.groupHSO.margin = 8;
+   this.groupHSO.spacing = 6;
+   this.groupHSO.addSpacing(4);
+   this.groupHSO.add(this.groupHa);
+   this.groupHSO.addSpacing(4);
+   this.groupHSO.add(this.groupSii);
+   this.groupHSO.addSpacing(4);
+   this.groupHSO.add(this.groupOiii);
 
    this.buttonOk = new PushButton(this);
    this.buttonOk.text = labelOk;
@@ -52,6 +129,8 @@ function ui() {
    this.sizer.spacing = 6;
    this.sizer.addSpacing(4);
    this.sizer.add(this.titleLabel);
+   this.sizer.addSpacing(4);
+   this.sizer.add(this.groupHSO);
    this.sizer.addSpacing(8);
    this.sizer.add(this.buttonGroup);
    dialog = this;
